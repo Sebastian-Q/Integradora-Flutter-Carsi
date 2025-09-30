@@ -164,11 +164,13 @@ sigaut/
 ```bash
 cd backend
 ./mvnw spring-boot:run
-
+```
 2. **Frontend**:
+ ```  
 cd frontend
 flutter pub get
 flutter run
+```
 
 ## 📷 Vista previa del modelo ERD
 
