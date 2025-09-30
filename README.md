@@ -124,7 +124,9 @@ Backend (Spring Boot)
 - **Interfaz responsive** para dispositivos móviles
 - **Gestión de perfiles** con foto de usuario
 
-## 🗂️ Estructura del Proyecto
+## 🗂️ Estructura del proyecto
+
+```
 sigaut/
 │
 ├── frontend/ (Flutter - Dart)
@@ -147,7 +149,7 @@ sigaut/
 │
 └── database/
     └── script.sql
-
+```
 
 ## 🚀 Instalación y Configuración
 
