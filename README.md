@@ -183,11 +183,12 @@ Versión actual: 1.0
 Estado: En desarrollo
 
 ## 👨‍💻 Desarrolladores
-Sebastián Quintero Martínez
-Israel Flores Reza
-Ana Jael Santos Carbajal
-Maximiliano Carrera Oropeza
-Diego Eduardo Jaimes Flores
+
+**Israel Flores Reza**
+**Ana Jael Santos Carbajal**
+**Maximiliano Carrera Oropeza**
+**Diego Eduardo Jaimes Flores**
+**Sebastián Quintero Martínez**
 
 Universidad Tecnológica Emiliano Zapata del Estado de Morelos
 División Académica de Tecnologías de la Información y Comunicación
