@@ -55,8 +55,6 @@ Backend (Spring Boot)
 - Consulta de ventas realizadas
 - Realización de ventas
 - Filtrado de ventas por rango de fechas
-
-### Empleado
 - Realización de ventas
 - Consulta de información personal
 - Consulta de lista de productos
