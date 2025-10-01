@@ -205,3 +205,124 @@ Este proyecto se encuentra bajo la licencia **CMMI 3 Nivel 3: Definido**.
 
 Este proyecto se encuentra bajo la licencia **MOPROSOFT 5 Nivel 5: Optimizado**. 
 
+
+# 🔄 Flujo de Trabajo y Ramificación
+
+## 🌿 Estrategia de Ramas
+
+### Ramas Principales
+- **main**: Rama de producción, contiene el código estable y listo para release  
+- **develop**: Rama de integración, donde se unen todas las características en desarrollo  
+
+### Ramas de Desarrollo
+Cada desarrollador trabajará en su propia rama personal siguiendo el formato:
+
+dev-nombreusuario
+
+
+**Ejemplos:**
+- `dev-isra` (Israel Flores Reza)  
+- `dev-ana` (Ana Jael Santos Carbajal)  
+- `dev-max` (Maximiliano Carrera Oropeza)  
+- `dev-diego` (Diego Eduardo Jaimes Flores)  
+- `dev-sebastian` (Sebastián Quintero Martínez)  
+
+---
+
+## 📋 Proceso de Desarrollo
+
+### 1. Crear Rama Personal
+```bash
+# Desde la rama develop
+git checkout develop
+git pull origin develop
+git checkout -b dev-tunombre
+```
+
+### 2. Trabajar en la Rama Personal
+
+Realiza commits descriptivos y frecuentes
+Mantén tu rama actualizada con develop
+Resuelve conflictos localmente
+
+### 3. Sincronizar con Develop
+# Actualizar tu rama con los últimos cambios de develop
+git fetch origin
+git merge origin/develop
+
+### 4. Enviar Cambios a Develop
+
+### Siempre a través de Pull Request (PR):
+Push tu rama al repositorio remoto
+Crear un Pull Request desde dev-tunombre → develop
+Etiquetar a un revisor usando @usuario
+Esperar la revisión y aprobación
+   
+### 5. Revisión de Código
+
+El revisor asignado revisará el código
+Se pueden solicitar cambios si es necesario
+Una vez aprobado, se mergea a develop
+
+### 6. Integración a Main
+
+Solo cuando develop esté estable y probado
+Se crea PR desde develop → main
+Requiere aprobación del equipo
+
+### 🚫 Reglas Importantes
+### ❌ Prohibido
+
+Hacer push directamente a main
+Hacer push directamente a develop
+Mergear sin revisión de código
+Trabajar directamente en develop o main
+
+### ✅ Obligatorio
+
+Siempre trabajar en tu rama personal
+Siempre usar Pull Requests para integrar cambios
+Siempre etiquetar a un revisor en el PR
+Resolver conflictos antes del merge
+Mantener commits descriptivos
+
+
+### 🏷️ Etiquetas para Revisores
+
+En cada Pull Request, DEBES etiquetar al menos a un compañero:
+
+@dev-isra @dev-ana @dev-max @dev-diego @dev-sebastian
+
+Ejemplo:
+
+"Hola equipo, por favor revisen este PR @dev-ana @dev-max"
+
+### 💡 Buenas Prácticas
+### Mensajes de Commit
+feat: agregar funcionalidad de escaneo de código de barras
+fix: corregir error en cálculo de totales
+docs: actualizar documentación de API
+refactor: mejorar estructura del ViewModel
+
+
+### Frecuencia de Commits
+
+Commits pequeños y frecuentes
+Cada commit debe ser funcional
+Evitar commits masivos
+
+### Actualización Constante
+
+Sincroniza tu rama con develop al menos una vez al día
+Resuelve conflictos tan pronto aparezcan
+
+### 🔄 Flujo Visual
+```
+dev-tunombre → [Pull Request] → develop → [Pull Request] → main
+     ↑                              ↑
+  (trabajo)                   (integración)
+```
+
+Este flujo garantiza un desarrollo ordenado, código revisado y minimiza los conflictos en el proyecto.
+
+
