@@ -1,7 +1,7 @@
 # SIGAUT - Sistema de Gestión de Abarrotes UTEZ
 
 ## 📋 Descripción del Proyecto
-SIGAUT es un sistema de gestión integral desarrollado para tiendas de abarrotes, diseñado para optimizar el control de inventario, gestión de categorias y procesamiento de ventas. La aplicación móvil ofrece una interfaz intuitiva que permite a los administradores y categorias gestionar eficientemente las operaciones diarias del negocio.
+SIGAUT es un sistema de gestión integral desarrollado para tiendas de abarrotes, diseñado para optimizar el control de inventario, gestión de categorias y procesamiento de ventas. La aplicación móvil ofrece una interfaz intuitiva que permite a los administradores gestionar eficientemente las operaciones diarias del negocio.
 
 ## 🎯 Objetivos
 - Desarrollar un sistema de gestión que facilite la administración del inventario
