@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sigaut_frontend/core/theme/custom_color_scheme.dart';
 import 'package:sigaut_frontend/core/theme/custom_text_style.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/top_menu_widget.dart';
+
 enum AlertTypeMessage { error, success, warning, info, ask }
 
 void onWidgetDidBuild(Function callback) {
@@ -116,7 +117,7 @@ void showTopMenu(BuildContext context) {
     barrierLabel: MaterialLocalizations.of(context).dialogLabel,
     barrierColor: Colors.black.withOpacity(0.5),
     pageBuilder: (context, _, __) {
-      return const TopMenuWidget();
+      return TopMenuWidget();
     },
     transitionBuilder: (context, animation, secondaryAnimation, child) {
       return SlideTransition(

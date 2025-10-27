@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sigaut_frontend/core/theme/custom_color_scheme.dart';
-import 'package:sigaut_frontend/core/theme/custom_text_style.dart';
 import 'package:sigaut_frontend/features/user/model/user_model.dart';
 import 'package:sigaut_frontend/features/user/repository/user_repository.dart';
+import 'package:sigaut_frontend/core/theme/custom_color_scheme.dart';
+import 'package:sigaut_frontend/core/theme/custom_text_style.dart';
+import 'package:sigaut_frontend/features/category/view/categories_screen.dart';
 import 'package:sigaut_frontend/features/user/view/login_screen.dart';
+import 'package:sigaut_frontend/features/product/view/products_screen.dart';
 import 'package:sigaut_frontend/features/user/view/profile_screen.dart';
+import 'package:sigaut_frontend/features/sale/view/report_sale_screen.dart';
+import 'package:sigaut_frontend/features/sale/view/sale_screen.dart';
 
 class TopMenuWidget extends StatefulWidget {
   const TopMenuWidget({super.key});
@@ -96,7 +100,7 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                             option(
                               onTap: () {
                                 Navigator.pop(context);
-                                //Navigator.pushNamed(context, SaleScreen.routeName); //TODO: Descomentar cuando esté la pantalla de ventas
+                                Navigator.pushNamed(context, SaleScreen.routeName);
                               },
                               title: "Vender",
                               icon: Icon(
@@ -108,7 +112,7 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                             option(
                                 onTap: (){
                                   Navigator.pop(context);
-                                  //Navigator.pushNamed(context, ProductsScreen.routeName); //TODO: Descomentar cuando esté la pantalla de productos
+                                  Navigator.pushNamed(context, ProductsScreen.routeName);
                                 },
                                 title: "Productos",
                                 image: "assets/images/svg/products.svg"
@@ -116,7 +120,7 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                             option(
                               onTap: () {
                                 Navigator.pop(context);
-                                //Navigator.pushNamed(context, CategoriesScreen.routeName); //TODO: Descomentar cuando esté la pantalla de categorías
+                                Navigator.pushNamed(context, CategoriesScreen.routeName);
                               },
                               title: "Categoria",
                               icon: Icon(
@@ -129,7 +133,7 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                             option(
                               onTap: () {
                                 Navigator.pop(context);
-                                //Navigator.pushNamed(context, ReportSaleScreen.routeName); //TODO: Descomentar cuando esté la pantalla de reportes
+                                Navigator.pushNamed(context, ReportSaleScreen.routeName);
                               },
                               title: "Reportes",
                               icon: Icon(
