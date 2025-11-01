@@ -1,7 +1,6 @@
 package com.example.SIGAUT_BACK.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
