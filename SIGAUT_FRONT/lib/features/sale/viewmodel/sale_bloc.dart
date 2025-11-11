@@ -5,9 +5,6 @@ import 'package:sigaut_frontend/features/product/model/product_model.dart';
 import 'package:sigaut_frontend/features/sale/model/sale_model.dart';
 import 'package:sigaut_frontend/features/sale/repository/sale_repository.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/functions.dart';
-import 'package:sigaut_frontend/features/others/view/widgets/functions.dart';
-import 'package:sigaut_frontend/features/product/model/product_model.dart';
-import 'package:sigaut_frontend/features/sale/model/sale_model.dart';
 
 part 'sale_event.dart';
 part 'sale_state.dart';
