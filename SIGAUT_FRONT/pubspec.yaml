@@ -38,15 +38,23 @@ dependencies:
   flutter_bloc: ^8.1.6
   flutter_svg: ^2.0.6
   equatable: ^2.0.7
-  http: ^1.2.2
-  dotted_border: ^2.1.0
-  intl: ^0.18.0
-  shared_preferences: ^2.3.3
-  barcode_scan2: ^4.0.0
 
+  dio: ^5.2.1+1
+  http: ^1.2.2
+
+  dotted_border: ^2.1.0
+  shared_preferences: ^2.3.3
   provider: ^6.0.5
 
+  intl: ^0.18.0
+
+  mobile_scanner: ^3.5.0
   cached_network_image: ^3.4.1
+
+  #IMAGE
+  file_picker: ^10.2.0
+  image_picker: ^1.1.0
+  open_filex: ^4.3.2
 
 dev_dependencies:
   flutter_test:
