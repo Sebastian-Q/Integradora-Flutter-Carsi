@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:sigaut_frontend/core/utils/urls.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sigaut_frontend/features/user/repository/user_repository.dart';
+
+final UserRepository userRepository = UserRepository();
 
 class Api {
   late final Dio dio;
@@ -28,12 +31,16 @@ class Api {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           // Obtiene el token desde SharedPreferences (puedes cambiarlo si lo guardas en otro lado)
-          final prefs = await SharedPreferences.getInstance();
-          final token = prefs.getString('token');
-
-          if (token != null && token.isNotEmpty) {
+          final token = await userRepository.getLocalToken();
+          debugPrint("token: $token");
+          debugPrint("token: ${token != ''}");
+          debugPrint("token: ${token.isNotEmpty}");
+          if (token != '' && token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
           }
+
+          final user = await userRepository.getLocalUser();
+          options.headers['user'] = user.id;
 
           return handler.next(options);
         },
@@ -51,7 +58,8 @@ class Api {
     return dio;
   }
 
-  Future<Response> get(String path, {Map<String, dynamic>? queryParameters}) async {
+  Future<Response> get(String path,
+      {Map<String, dynamic>? queryParameters}) async {
     return await dio.get(path, queryParameters: queryParameters);
   }
 

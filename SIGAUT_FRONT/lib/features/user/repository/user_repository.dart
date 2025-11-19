@@ -7,6 +7,7 @@ import 'package:sigaut_frontend/core/api/api.dart';
 import 'package:sigaut_frontend/core/utils/urls.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/functions.dart';
 import 'package:sigaut_frontend/features/user/model/user_model.dart';
+import 'package:sigaut_frontend/features/user/repository/auth_model.dart';
 
 class UserRepository {
   final Api api = Api();
@@ -21,14 +22,30 @@ class UserRepository {
     return user;
   }
 
+  Future<String> getLocalToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token') ?? '';
+    return token;
+  }
+
   void saveLocalUser(UserModel user) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('user', json.encode(user.toMap()));
   }
 
+  void saveLocalToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
+  }
+
   void deleteLocalUser() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('user');
+  }
+
+  void deleteLocalToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
   }
 
   Future<String> login({required String username, required String password}) async {
@@ -43,12 +60,11 @@ class UserRepository {
 
       if (response.statusCode == 200) {
         final data = response.data;
-        final user = UserModel.fromJson(data);
-
-        // Guardar el token en local
-        //final prefs = await SharedPreferences.getInstance();
-        //await prefs.setString('token', user.jwtToken?.accessToken ?? '');
-        saveLocalUser(user);
+        debugPrint("AUTH: ${data["data"]}");
+        final auth = AuthModel.fromJson(data["data"]);
+        debugPrint("AUTH: ${auth.toMap()}");
+        saveLocalToken(auth.token);
+        saveLocalUser(auth.userModel);
         return "exito";
       } else {
         return "Usuario o contraseña incorrectos";
@@ -65,9 +81,9 @@ class UserRepository {
     try {
       final response = await api.post(urlUser, data: user.toSave());
       debugPrint("response.data: ${response.data["data"]}");
-      UserModel userSave = UserModel.fromJson(response.data["data"]);
-      debugPrint("userSave: ${userSave.toMap()}");
-      saveLocalUser(userSave);
+      AuthModel auth = AuthModel.fromJson(response.data["data"]);
+      saveLocalToken(auth.token);
+      saveLocalUser(auth.userModel);
       return response.statusCode == 201 || response.statusCode == 200;
     } on DioException catch (e) {
       final errorMessage = getDioErrorMessage(e);

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigaut_frontend/core/theme/custom_color_scheme.dart';
 import 'package:sigaut_frontend/core/theme/custom_text_style.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/functions.dart';
+import 'package:sigaut_frontend/features/sale/view/sale_screen.dart';
 import 'package:sigaut_frontend/features/user/view/login_screen.dart';
 import 'package:sigaut_frontend/features/user/view/widgets/register_form_widget.dart';
 import 'package:sigaut_frontend/features/user/viewModel/user_bloc.dart';
@@ -33,7 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           if (state is SuccessfulState) {
             showSnackBar(context, state.message.toString(), type: AlertTypeMessage.success);
             Future.delayed(const Duration(milliseconds: 500), () {
-              //Navigator.pushNamed(context, SaleScreen.routeName); //TODO: Descomentar cuando esté la pantalla de ventas
+              Navigator.pushNamed(context, SaleScreen.routeName);
             });
           }
           if (state is MessageState) {
