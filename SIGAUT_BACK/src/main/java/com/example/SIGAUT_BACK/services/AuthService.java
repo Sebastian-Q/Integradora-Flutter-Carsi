@@ -2,7 +2,6 @@ package com.example.SIGAUT_BACK.services;
 
 import com.example.SIGAUT_BACK.config.ApiResponse;
 import com.example.SIGAUT_BACK.controller.auth.dto.SignedDto;
-import com.example.SIGAUT_BACK.controller.auth.dto.SimpleUserDto;
 import com.example.SIGAUT_BACK.models.User;
 import com.example.SIGAUT_BACK.security.jwt.JwtProvider;
 import org.springframework.http.HttpStatus;
@@ -44,28 +43,27 @@ public class AuthService {
             }
 
             User user = foundUser.get();
-
             Authentication auth = manager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
             );
             SecurityContextHolder.getContext().setAuthentication(auth);
-
             String token = provider.generateToken(auth);
-            SimpleUserDto simpleUser = new SimpleUserDto(user.getId(), user.getUsername());
-            SignedDto signedDto = new SignedDto(token, "Bearer", simpleUser);
-
+            SignedDto signedDto = new SignedDto(token, "Bearer", user);
             return new ResponseEntity<>(new ApiResponse(signedDto, HttpStatus.OK), HttpStatus.OK);
         } catch (BadCredentialsException e) {
+            System.out.println("ERROR 1: " + e.getMessage());
             return new ResponseEntity<>(
                     new ApiResponse(HttpStatus.UNAUTHORIZED, true, "Credenciales inválidas"),
                     HttpStatus.UNAUTHORIZED
             );
         } catch (DisabledException e) {
+            System.out.println("ERROR 2: " + e.getMessage());
             return new ResponseEntity<>(
                     new ApiResponse(HttpStatus.UNAUTHORIZED, true, "Usuario deshabilitado"),
                     HttpStatus.UNAUTHORIZED
             );
         } catch (Exception e) {
+            System.out.println("ERROR 3: " + e.getMessage());
             return new ResponseEntity<>(
                     new ApiResponse(HttpStatus.INTERNAL_SERVER_ERROR, true, "Error interno del servidor"),
                     HttpStatus.INTERNAL_SERVER_ERROR

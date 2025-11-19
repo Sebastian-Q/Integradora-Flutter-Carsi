@@ -20,8 +20,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAllProducts() {
-        return productService.getAllProducts();
+    public ResponseEntity<ApiResponse> getAllProducts(@RequestHeader("user") int idUser) {
+        return productService.getAllProducts(idUser);
     }
 
     @GetMapping("/{id}")

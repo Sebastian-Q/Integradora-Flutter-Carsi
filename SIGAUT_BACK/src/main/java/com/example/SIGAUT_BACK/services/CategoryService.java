@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class CategoryService {
@@ -29,8 +31,13 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<ApiResponse> getAll() {
-        return new ResponseEntity<>(new ApiResponse(categoryRepository.findAll(), HttpStatus.OK), HttpStatus.OK);
+    public ResponseEntity<ApiResponse> getAll(int idUser) {
+        List<Category> categories = categoryRepository.findByUserId((long) idUser);
+
+        return new ResponseEntity<>(
+                new ApiResponse(categories, HttpStatus.OK),
+                HttpStatus.OK
+        );
     }
 
     @Transactional(readOnly = true)

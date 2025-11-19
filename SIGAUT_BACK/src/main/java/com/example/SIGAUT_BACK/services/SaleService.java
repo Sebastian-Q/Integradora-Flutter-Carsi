@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,8 +32,13 @@ public class SaleService {
         this.userRepository = userRepository;
     }
 
-    public ResponseEntity<ApiResponse> getAllSales() {
-        return new ResponseEntity<>(new ApiResponse(saleRepository.findAll(), org.springframework.http.HttpStatus.OK), org.springframework.http.HttpStatus.OK);
+    public ResponseEntity<ApiResponse> getAllSales(int idUser) {
+        List<Sale> sales = saleRepository.findByUserId((long) idUser);
+
+        return new ResponseEntity<>(
+                new ApiResponse(sales, HttpStatus.OK),
+                HttpStatus.OK
+        );
     }
 
     public ResponseEntity<ApiResponse> getSaleById(Long id) {

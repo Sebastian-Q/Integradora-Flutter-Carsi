@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,8 +35,13 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<ApiResponse> getAllProducts() {
-        return new ResponseEntity<>(new ApiResponse(productRepository.findAll(), HttpStatus.OK), HttpStatus.OK);
+    public ResponseEntity<ApiResponse> getAllProducts(int idUser) {
+        List<Product> products = productRepository.findByUserId((long) idUser);
+
+        return new ResponseEntity<>(
+                new ApiResponse(products, HttpStatus.OK),
+                HttpStatus.OK
+        );
     }
 
     @Transactional(readOnly = true)
