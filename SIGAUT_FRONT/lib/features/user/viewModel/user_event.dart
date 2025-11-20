@@ -21,6 +21,7 @@ class EditUserEvent extends UserEvent {
   final UserModel userModel;
   final String? messageSuccess;
   final bool updateLocal;
+  final ImageFileModel? imageFile;
 
-  EditUserEvent({required this.userModel, this.messageSuccess, this.updateLocal = false});
+  EditUserEvent({required this.userModel, this.messageSuccess, this.updateLocal = false, this.imageFile});
 }

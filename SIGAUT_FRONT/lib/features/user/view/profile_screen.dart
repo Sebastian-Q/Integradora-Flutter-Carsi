@@ -9,6 +9,7 @@ import 'package:sigaut_frontend/features/others/view/widgets/form_input_widget.d
 import 'package:sigaut_frontend/features/others/view/widgets/functions.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/image_widget.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/top_widget.dart';
+import 'package:sigaut_frontend/features/user/model/image_file_model.dart';
 import 'package:sigaut_frontend/features/user/model/user_model.dart';
 import 'package:sigaut_frontend/features/user/repository/user_repository.dart';
 import 'package:sigaut_frontend/features/user/viewModel/user_bloc.dart';
@@ -24,6 +25,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   UserBloc userBloc = UserBloc();
   UserModel userModel = UserModel();
   UserRepository userRepository = UserRepository();
+
+  ImageFileModel? newImage;
 
   final _formProfileKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
@@ -64,6 +67,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               usernameController.text = userModel.username;
               passwordController.text = userModel.password;
             });
+
+            debugPrint("userModel: ${userModel.toMap()}");
           }
 
           if (state is SuccessfulState) {
@@ -109,8 +114,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             title: "Imagen de perfil",
                             onImageSelected: (file) {
                               debugPrint("Archivo seleccionado: ${file?.file?.path}");
+                              if (file != null) {
+                                newImage = file;
+                              }
                             },
-                            urlImage: "https://wallpapers.com/images/hd/anime-4k-pictures-q1cg89niv319ld1a.jpg",
+                            urlImage: userModel.image_url,
                           ),
                         )
                       ),
@@ -174,7 +182,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ValidateConfig.required()
                         ],
                       ),
-                      FormInputWidget(
+                      /*FormInputWidget(
                         title: "Password",
                         bottomPadding: 16,
                         required: true,
@@ -197,7 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         exceptions: [
                           ValidateConfig.required()
                         ],
-                      ),
+                      ),*/
                     ],
                   ),
                 ),
@@ -275,7 +283,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (_formProfileKey.currentState!.validate()) {
       _formProfileKey.currentState!.save();
       setState(() {
-        userBloc.add(EditUserEvent(userModel: userModel, messageSuccess: "Información actualizada", updateLocal: true));
+        userBloc.add(EditUserEvent(userModel: userModel, messageSuccess: "Información actualizada", updateLocal: true, imageFile: newImage));
       });
     }
   }

@@ -68,6 +68,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           titleHeader: "Categorias",
           titleSearch: "Clave / Nombre",
           body: body,
+          centerBody: listCategories.isEmpty,
           refreshFunction: () {
             categoryBloc.add(AllCategoriesEvent());
           },
@@ -228,7 +229,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
     return Center(
       child: Text(
-        "No hay categorias registrados",
+        "No hay categorias registradas",
         textAlign: TextAlign.center,
         style: CustomTextStyle.bold32.copyWith(
           color: Theme.of(context).colorScheme.segundoText,

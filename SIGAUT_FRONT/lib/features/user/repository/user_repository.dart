@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigaut_frontend/core/api/api.dart';
 import 'package:sigaut_frontend/core/utils/urls.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/functions.dart';
+import 'package:sigaut_frontend/features/user/model/image_file_model.dart';
 import 'package:sigaut_frontend/features/user/model/user_model.dart';
 import 'package:sigaut_frontend/features/user/repository/auth_model.dart';
 
@@ -101,4 +103,37 @@ class UserRepository {
       return false;
     }
   }
+
+  Future<String> photoUser({required int userId, required ImageFileModel imageFile}) async {
+    try {
+      final file = imageFile.file!;
+
+      debugPrint("ENTRO AQUI: $file");
+
+      final fileName = file.path.split("/").last;
+
+      FormData formData = FormData.fromMap({
+        "file": await MultipartFile.fromFile(
+          file.path,
+          filename: fileName,
+          contentType: DioMediaType.parse(imageFile.contentType),
+        ),
+      });
+
+      final response = await api.post(
+        "$urlUser/$userId/profile-picture",
+        data: formData,
+      );
+
+      debugPrint("RESPONSE: $response");
+      debugPrint("RESPONSE: ${response.data}");
+      debugPrint("RESPONSE: ${response.data["data"]}");
+
+      return response.data["data"];
+    } catch (e) {
+      print("Error subiendo imagen: $e");
+      return e.toString();
+    }
+  }
+
 }

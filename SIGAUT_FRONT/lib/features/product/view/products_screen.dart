@@ -69,6 +69,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
           titleHeader: "Productos",
           titleSearch: "Codigo barras / Nombre",
           body: body,
+          centerBody: listProducts.isEmpty,
           refreshFunction: () {
             productBloc.add(AllProductsEvent());
           },

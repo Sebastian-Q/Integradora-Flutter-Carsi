@@ -7,6 +7,7 @@ class UserModel {
   String username = "";
   String password = "";
   String direction = "";
+  String? image_url;
 
   UserModel();
 
@@ -18,7 +19,8 @@ class UserModel {
         email = json["email"],
         username = json["username"],
         password = json["password"],
-        direction = json["direction"] ?? "Sin definir";
+        direction = json["direction"] ?? "Sin definir",
+        image_url = json["image_url"];
 
   Map<String, dynamic> toMap() {
     return {
@@ -30,6 +32,7 @@ class UserModel {
       "username": username,
       "password": password,
       "direction": direction,
+      "image_url": image_url,
     };
   }
 
