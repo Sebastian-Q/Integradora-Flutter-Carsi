@@ -62,7 +62,7 @@ public class CategoryService {
         if (categoryRepository.findByClave(request.getClave()).isPresent()) {
             return new ResponseEntity<>(new ApiResponse(CLAVE_EXISTS_MESSAGE, HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
-        Category category = new Category(request.getClave(), request.getName(), request.getDescription());
+        Category category = new Category(request.getName(), request.getClave(), request.getDescription());
         category.setUser(currentUser);
         Category savedCategory = categoryRepository.save(category);
         return new ResponseEntity<>(new ApiResponse(savedCategory, HttpStatus.OK), HttpStatus.OK);
