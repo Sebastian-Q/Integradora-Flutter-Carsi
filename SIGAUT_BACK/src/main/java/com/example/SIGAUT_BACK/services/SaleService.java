@@ -85,7 +85,7 @@ public class SaleService {
                 request.getEmployee(),
                 request.getPayMethod()
         );
-        sale.setProductsList(request.getProductsList());
+        //sale.setProductsList(request.getProductsList());
         sale.setUser(currentUser);
         Sale savedSale = saleRepository.save(sale);
         return new ResponseEntity<>(new ApiResponse(savedSale, HttpStatus.OK), HttpStatus.OK);
