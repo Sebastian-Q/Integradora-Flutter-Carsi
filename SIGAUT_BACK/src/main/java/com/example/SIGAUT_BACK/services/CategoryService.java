@@ -59,7 +59,7 @@ public class CategoryService {
         User currentUser = userRepository.findById(request.getIdUser()).orElseThrow();
 
         System.out.println("Usuario: " + currentUser.getUsername());
-        if (categoryRepository.findByClave(request.getClave()).isPresent()) {
+        if (categoryRepository.findByClaveAndUserId(request.getClave(), currentUser.getId()).isPresent()) {
             return new ResponseEntity<>(new ApiResponse(CLAVE_EXISTS_MESSAGE, HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
         Category category = new Category(request.getName(), request.getClave(), request.getDescription());
@@ -114,7 +114,7 @@ public class CategoryService {
     private boolean updateCategoryClaveIfValid(Category updatedCategory, Category existingCategory) {
         if (updatedCategory.getClave() != null && !updatedCategory.getClave().isEmpty()
                 && !updatedCategory.getClave().equals(existingCategory.getClave())) {
-            if (categoryRepository.findByClave(updatedCategory.getClave()).isPresent()) {
+            if (categoryRepository.findByClaveAndUserId(updatedCategory.getClave(), updatedCategory.getUser().getId()).isPresent()) {
                 return false;
             }
             existingCategory.setClave(updatedCategory.getClave());
