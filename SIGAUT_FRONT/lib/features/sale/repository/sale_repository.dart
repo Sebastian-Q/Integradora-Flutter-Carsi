@@ -5,6 +5,8 @@ import 'package:sigaut_frontend/features/product/model/product_model.dart';
 import 'package:sigaut_frontend/features/sale/model/sale_model.dart';
 import 'package:sigaut_frontend/core/utils/urls.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/functions.dart';
+import 'package:sigaut_frontend/features/user/model/user_model.dart';
+import 'package:sigaut_frontend/features/user/repository/user_repository.dart';
 
 class SaleRepository {
   final Api api = Api();
@@ -50,17 +52,28 @@ class SaleRepository {
   }
 
   Future<ProductModel> addProduct({required String codeBar}) async {
+    UserRepository userRepository = UserRepository();
+    UserModel user = await userRepository.getLocalUser();
     ProductModel productModel = ProductModel();
     try {
-      final response = await api.get('$urlBack$urlProduct/barcode/$codeBar');
+      final response = await api.post(
+        '$urlBack$urlProduct/barcode',
+        data: {
+          "barcode": codeBar,
+          "idUser": user.id
+        },
+      );
       debugPrint("response.data: ${response.data["data"]}");
       if (response.statusCode == 200) {
         productModel = ProductModel.fromJson(response.data["data"]);
       } else {
         debugPrint('Error: ${response.statusCode}');
       }
-    } catch (error) {
-      debugPrint("ERROR: $error");
+    } on DioException catch (e) {
+      final errorMessage = getDioErrorMessage(e);
+      throw Exception(errorMessage);
+    } catch (e) {
+      throw Exception("Error al guardar categoria: $e");
     }
     return productModel;
   }
