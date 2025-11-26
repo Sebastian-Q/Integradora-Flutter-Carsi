@@ -2,6 +2,7 @@ package com.example.SIGAUT_BACK.services;
 
 import com.example.SIGAUT_BACK.config.ApiResponse;
 import com.example.SIGAUT_BACK.controller.product.dto.ProductRequest;
+import com.example.SIGAUT_BACK.controller.product.dto.SearchProduct;
 import com.example.SIGAUT_BACK.models.Category;
 import com.example.SIGAUT_BACK.models.Product;
 import com.example.SIGAUT_BACK.models.User;
@@ -52,8 +53,8 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<ApiResponse> getProductByBarcode(String barcode) {
-        return productRepository.findByBarCode(barcode)
+    public ResponseEntity<ApiResponse> getProductByBarcode(SearchProduct dto) {
+        return productRepository.findByBarCodeAndUserId(dto.getBarcode(), dto.getIdUser())
                 .map(category -> new ResponseEntity<>(new ApiResponse(category, HttpStatus.OK), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(new ApiResponse(PRODUCT_NOT_FOUND_MESSAGE, HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST));
     }
@@ -72,7 +73,7 @@ public class ProductService {
         }
 
         // Validar código de barras único
-        if (productRepository.findByBarCode(request.getBarCode()).isPresent()) {
+        if (productRepository.findByBarCodeAndUserId(request.getBarCode(), currentUser.getId()).isPresent()) {
             return new ResponseEntity<>(new ApiResponse(BARCODE_EXISTS_MESSAGE, HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
 
@@ -105,7 +106,8 @@ public class ProductService {
 
                     // Validar cambio de código de barras
                     if (updatedProduct.getBarCode() != null && !updatedProduct.getBarCode().equals(existingProduct.getBarCode())) {
-                        if (productRepository.findByBarCode(updatedProduct.getBarCode()).isPresent()) {
+
+                        if (productRepository.findByBarCodeAndUserId(updatedProduct.getBarCode(), updatedProduct.getUser().getId()).isPresent()) {
                             return new ResponseEntity<>(new ApiResponse(BARCODE_EXISTS_MESSAGE, HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
                         }
                         existingProduct.setBarCode(updatedProduct.getBarCode());

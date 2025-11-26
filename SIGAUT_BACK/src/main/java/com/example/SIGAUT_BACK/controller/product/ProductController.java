@@ -2,6 +2,7 @@ package com.example.SIGAUT_BACK.controller.product;
 
 import com.example.SIGAUT_BACK.config.ApiResponse;
 import com.example.SIGAUT_BACK.controller.product.dto.ProductRequest;
+import com.example.SIGAUT_BACK.controller.product.dto.SearchProduct;
 import com.example.SIGAUT_BACK.models.Product;
 import com.example.SIGAUT_BACK.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,9 @@ public class ProductController {
         return productService.getProductById (id);
     }
 
-    @GetMapping("/barcode/{barcode}")
-    public ResponseEntity<ApiResponse> getProductsByBarcode (@PathVariable String barcode) {
-        return productService.getProductByBarcode (barcode);
+    @PostMapping("/barcode")
+    public ResponseEntity<ApiResponse> getProductsByBarcode (@RequestBody SearchProduct searchProduct) {
+        return productService.getProductByBarcode(searchProduct);
     }
 
     @PostMapping

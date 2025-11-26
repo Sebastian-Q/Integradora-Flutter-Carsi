@@ -25,7 +25,7 @@ public class Product {
     @Column(nullable = false)
     private Double price;
 
-    @Column(length = 50, nullable = false, unique = true)
+    @Column(length = 50, nullable = false)
     private String barCode;
 
     @Column(length = 50, nullable = false)
@@ -43,11 +43,6 @@ public class Product {
     @ManyToOne(optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
-
-    @ManyToOne
-    @JoinColumn(name = "sale_id")
-    @JsonIgnore
-    private Sale sale; //Marca error porque aún no se crean las ventas
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
