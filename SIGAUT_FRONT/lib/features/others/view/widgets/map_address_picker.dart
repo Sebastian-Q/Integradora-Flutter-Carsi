@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:sigaut_frontend/features/others/view/widgets/form_input_widget.dart';
+import 'package:sigaut_frontend/features/others/view/widgets/functions.dart';
 
 class MapAddressPicker extends StatefulWidget {
   final String initialAddress;
@@ -63,25 +65,18 @@ class _MapAddressPickerState extends State<MapAddressPicker> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        // -------- CAMPO DE DIRECCIÓN ----------
-        TextField(
-          controller: addressController,
-          decoration: const InputDecoration(
-            labelText: "Dirección",
-            prefixIcon: Icon(Icons.location_on_outlined),
-            border: OutlineInputBorder(),
-          ),
-          onChanged: (value) {
+        FormInputWidget(
+          title: "Dirección",
+          iconSuffix: const Icon(Icons.location_on_outlined),
+          bottomPadding: 16,
+          onChange: (value) {
             if (value.length > 5) {
               _moveMapToAddress(value);
             }
           },
         ),
-
-        const SizedBox(height: 12),
-
-        // ------------- MAPA --------------------
         SizedBox(
           height: 350,
           child: GoogleMap(
@@ -104,6 +99,7 @@ class _MapAddressPickerState extends State<MapAddressPicker> {
             },
           ),
         ),
+        customSizeHeight
       ],
     );
   }

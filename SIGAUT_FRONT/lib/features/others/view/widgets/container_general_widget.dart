@@ -159,7 +159,7 @@ class _ContainerGeneralWidgetState extends State<ContainerGeneralWidget> {
                                 onPressed: () {
                                   setState(() {
                                     textEditingController.clear();
-                                    widget.searchFunction?.call();
+                                    widget.searchFunction?.call("");
                                   });
                                 },
                                 icon: Icon(

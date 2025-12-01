@@ -8,6 +8,8 @@ import 'package:sigaut_frontend/features/others/view/widgets/button_general_widg
 import 'package:sigaut_frontend/features/others/view/widgets/form_input_widget.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/functions.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/image_widget.dart';
+import 'package:sigaut_frontend/features/others/view/widgets/map_address_picker.dart';
+import 'package:sigaut_frontend/features/others/view/widgets/show_custom_dialog_widget.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/top_widget.dart';
 import 'package:sigaut_frontend/features/user/model/image_file_model.dart';
 import 'package:sigaut_frontend/features/user/model/user_model.dart';
@@ -36,6 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController directionController = TextEditingController();
 
   bool _isPasswordVisible = false;
 
@@ -66,6 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               emailController.text = userModel.email;
               usernameController.text = userModel.username;
               passwordController.text = userModel.password;
+              directionController.text = userModel.direction;
             });
 
             debugPrint("userModel: ${userModel.toMap()}");
@@ -169,6 +173,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         exceptions: [
                           ValidateConfig.required()
                         ],
+                      ),
+                      FormInputWidget(
+                        title: "Dirección",
+                        required: true,
+                        fieldController: directionController,
+                        textAlign: TextAlign.center,
+                        iconSuffix: const Icon(Icons.map_outlined),
+                        readOnly: true,
+                        onTap: () async {
+                          final result = await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                insetPadding: const EdgeInsets.all(16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: ShowCustomDialogWidget(
+                                  title: "Seleccionar dirección",
+                                  actionOk: () {
+                                    Navigator.of(context).pop(directionController.text);
+                                  },
+                                  child: MapAddressPicker(
+                                    initialAddress: directionController.text,
+                                    onAddressSelected: (address) {
+                                      directionController.text = address;
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        onChange: (value) {
+                          userModel.direction = value;
+                        },
+                        exceptions: [ValidateConfig.required()],
                       ),
                       FormInputWidget(
                         title: "Username",
