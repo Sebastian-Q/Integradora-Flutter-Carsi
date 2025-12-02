@@ -21,7 +21,7 @@ class ProductsScreen extends StatefulWidget {
 class _ProductsScreenState extends State<ProductsScreen> {
   ProductBloc productBloc = ProductBloc();
   List<ProductModel> listProducts = [];
-
+  List<ProductModel> filteredProducts = [];
 
   @override
   void initState() {
@@ -62,6 +62,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
           if (state is AllProductsState) {
             setState(() {
               listProducts = state.listProducts;
+              filteredProducts = state.listProducts;
             });
           }
         },
@@ -69,20 +70,22 @@ class _ProductsScreenState extends State<ProductsScreen> {
           titleHeader: "Productos",
           titleSearch: "Codigo barras / Nombre",
           body: body,
+          centerBody: filteredProducts.isEmpty,
           refreshFunction: () {
             productBloc.add(AllProductsEvent());
           },
           addFunction: addProduct,
+          searchFunction: (value) => filterProducts(value),
         ),
       ),
     );
   }
 
   Widget get body {
-    if (listProducts.isNotEmpty) {
+    if (filteredProducts.isNotEmpty) {
       return Column(
-        children: List.generate(listProducts.length, (index) {
-          final product = listProducts[index];
+        children: List.generate(filteredProducts.length, (index) {
+          final product = filteredProducts[index];
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: Container(
@@ -238,4 +241,23 @@ class _ProductsScreenState extends State<ProductsScreen> {
       },
     );
   }
+
+  void filterProducts(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        filteredProducts = listProducts;
+      });
+      return;
+    }
+
+    final q = query.toLowerCase();
+
+    setState(() {
+      filteredProducts = listProducts.where((product) {
+        return product.name.toLowerCase().contains(q) ||
+            product.barCode.toLowerCase().contains(q);
+      }).toList();
+    });
+  }
+
 }

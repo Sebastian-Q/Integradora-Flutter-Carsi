@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sigaut_frontend/features/others/view/widgets/alert_confirm_widget.dart';
 import 'package:sigaut_frontend/features/sale/viewModel/sale_bloc.dart';
 import 'package:sigaut_frontend/features/product/model/product_model.dart';
 import 'package:sigaut_frontend/features/sale/model/sale_model.dart';
@@ -73,6 +74,9 @@ class _SaleScreenState extends State<SaleScreen> {
             showSnackBar(context, "Producto Agregado", type: AlertTypeMessage.success);
           }
           totalSale();
+        }
+        if (state is ErrorState) {
+          confirmAlert(context, title: "Error", textContent: state.message, showCancel: false);
         }
       },
       child: saleWidget(),

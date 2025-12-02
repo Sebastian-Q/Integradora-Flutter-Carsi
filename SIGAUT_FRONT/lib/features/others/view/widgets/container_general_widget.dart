@@ -13,6 +13,7 @@ class ContainerGeneralWidget extends StatefulWidget {
   final Function? searchFunction;
   final String? titleSearch;
   final List<Widget> otherActions;
+  final bool centerBody;
 
   const ContainerGeneralWidget({
     super.key,
@@ -25,6 +26,7 @@ class ContainerGeneralWidget extends StatefulWidget {
     this.searchFunction,
     this.titleSearch,
     this.otherActions = const [],
+    this.centerBody = false,
   });
 
   @override
@@ -157,7 +159,7 @@ class _ContainerGeneralWidgetState extends State<ContainerGeneralWidget> {
                                 onPressed: () {
                                   setState(() {
                                     textEditingController.clear();
-                                    widget.searchFunction?.call();
+                                    widget.searchFunction?.call("");
                                   });
                                 },
                                 icon: Icon(
@@ -186,7 +188,7 @@ class _ContainerGeneralWidgetState extends State<ContainerGeneralWidget> {
                 child: Container(
                   padding: EdgeInsets.only(bottom: 16, top: 16),
                   color: Theme.of(context).colorScheme.segundoBackground,
-                  child: SingleChildScrollView(
+                  child: widget.centerBody ? widget.body : SingleChildScrollView(
                     physics: const NeverScrollableScrollPhysics(),
                     child: widget.body,
                   ),

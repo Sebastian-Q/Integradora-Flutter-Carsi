@@ -20,8 +20,8 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAll() {
-        return categoryService.getAll();
+    public ResponseEntity<ApiResponse> getAll(@RequestHeader("user") int idUser) {
+        return categoryService.getAll(idUser);
     }
 
     @GetMapping("/{id}")

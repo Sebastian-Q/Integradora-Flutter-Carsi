@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sigaut_frontend/features/others/view/widgets/navigation_helper.dart';
+import 'package:sigaut_frontend/features/product/view/products_screen.dart';
+import 'package:sigaut_frontend/features/sale/view/report_sale_screen.dart';
+import 'package:sigaut_frontend/features/sale/view/sale_screen.dart';
 import 'package:sigaut_frontend/features/user/model/user_model.dart';
 import 'package:sigaut_frontend/features/user/repository/user_repository.dart';
 import 'package:sigaut_frontend/core/theme/custom_color_scheme.dart';
@@ -85,7 +89,8 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                             option(
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.pushNamed(context, ProfileScreen.routeName);
+                                NavigationHelper.navigateReplacement(context, const ProfileScreen());
+                                //Navigator.pushNamed(context, ProfileScreen.routeName);
                               },
                               title: "Perfil",
                               icon: Icon(
@@ -97,6 +102,7 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                             option(
                               onTap: () {
                                 Navigator.pop(context);
+                                NavigationHelper.navigateReplacement(context, const SaleScreen());
                                 //Navigator.pushNamed(context, SaleScreen.routeName);
                               },
                               title: "Vender",
@@ -109,6 +115,7 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                             option(
                                 onTap: (){
                                   Navigator.pop(context);
+                                  NavigationHelper.navigateReplacement(context, const ProductsScreen());
                                   //Navigator.pushNamed(context, ProductsScreen.routeName);
                                 },
                                 title: "Productos",
@@ -117,7 +124,8 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                             option(
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.pushNamed(context, CategoriesScreen.routeName);
+                                NavigationHelper.navigateReplacement(context, const CategoriesScreen());
+                                //Navigator.pushNamed(context, CategoriesScreen.routeName);
                               },
                               title: "Categoria",
                               icon: Icon(
@@ -130,6 +138,7 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                             option(
                               onTap: () {
                                 Navigator.pop(context);
+                                NavigationHelper.navigateReplacement(context, const ReportSaleScreen());
                                 //Navigator.pushNamed(context, ReportSaleScreen.routeName);
                               },
                               title: "Reportes",
@@ -144,7 +153,9 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                               onTap: () {
                                 Navigator.pop(context);
                                 userRepository.deleteLocalUser();
-                                Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+                                userRepository.deleteLocalToken();
+                                NavigationHelper.navigateReplacement(context, const LoginScreen());
+                                //Navigator.pushReplacementNamed(context, LoginScreen.routeName);
                               },
                               title: "Cerrar sesión",
                               icon: Icon(

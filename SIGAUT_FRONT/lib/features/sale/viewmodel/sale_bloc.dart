@@ -31,7 +31,8 @@ class SaleBloc extends Bloc<SaleEvent, SaleState> {
           emit(MessageState(message: "Venta Fallida", typeMessage: AlertTypeMessage.error));
         }
       } catch (error) {
-        emit(ErrorState(message: error.toString()));
+        debugPrint("ERROR: $error");
+        emit(MessageState(message: error.toString(), typeMessage: AlertTypeMessage.error));
       }
       emit(EndLoadingState());
     });

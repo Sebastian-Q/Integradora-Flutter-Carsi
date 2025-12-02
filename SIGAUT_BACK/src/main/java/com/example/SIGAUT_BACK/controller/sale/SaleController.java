@@ -19,8 +19,8 @@ public class SaleController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAllSales() {
-        return saleService.getAllSales();
+    public ResponseEntity<ApiResponse> getAllSales(@RequestHeader("user") int idUser) {
+        return saleService.getAllSales(idUser);
     }
 
     @GetMapping("/{id}")

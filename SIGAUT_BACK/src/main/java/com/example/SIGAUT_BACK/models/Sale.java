@@ -35,14 +35,6 @@ public class Sale {
     @Column(nullable = false)
     private String payMethod;
 
-    @ManyToMany
-    @JoinTable(
-            name = "sale_products",
-            joinColumns = @JoinColumn(name = "sale_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> productsList;
-
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

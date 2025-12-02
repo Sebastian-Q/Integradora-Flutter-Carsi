@@ -29,6 +29,7 @@ class ImageWidget extends StatefulWidget {
 
 class _ImageWidgetState extends State<ImageWidget> {
   bool isLoading = false;
+  Uint8List? previewBytes;
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +43,21 @@ class _ImageWidgetState extends State<ImageWidget> {
           strokeWidth: 2,
           child: Center(
             child: isLoading
-                ? CircularProgressIndicator(
+                ? const CircularProgressIndicator(
                     color: Color(0xFF1A5ED7)
                   )
                 : Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (widget.urlImage != null) ...{
+                  if (previewBytes != null) ...{
+                    Expanded(
+                      child: Image.memory(
+                        previewBytes!,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  } else if (widget.urlImage != null) ...{
                     Expanded(
                       child: Image.network(
                         widget.urlImage!,
@@ -108,6 +116,13 @@ class _ImageWidgetState extends State<ImageWidget> {
 
     File file;
     file = File(result.files.single.path!);
+
+    // Mostrar preview ANTES de subir
+    Uint8List bytes = await file.readAsBytes();
+    setState(() {
+      previewBytes = bytes;
+    });
+
     if (['jpeg', 'png', 'jpg'].contains(result.files.single.extension)) {
       final fileModel = await setPart(file);
       return fileModel;

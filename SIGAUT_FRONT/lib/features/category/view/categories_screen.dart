@@ -21,6 +21,7 @@ class CategoriesScreen extends StatefulWidget {
 class _CategoriesScreenState extends State<CategoriesScreen> {
   CategoryBloc categoryBloc = CategoryBloc();
   List<CategoryModel> listCategories = [];
+  List<CategoryModel> filteredCategories = [];
 
   @override
   void initState() {
@@ -61,6 +62,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           if (state is AllCategoriesState) {
             setState(() {
               listCategories = state.listCategories;
+              filteredCategories = state.listCategories;
             });
           }
         },
@@ -68,20 +70,22 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           titleHeader: "Categorias",
           titleSearch: "Clave / Nombre",
           body: body,
+          centerBody: filteredCategories.isEmpty,
           refreshFunction: () {
             categoryBloc.add(AllCategoriesEvent());
           },
           addFunction: addCategory,
+          searchFunction: (value) => filterCategories(value),
         ),
       ),
     );
   }
 
   Widget get body {
-    if (listCategories.isNotEmpty) {
+    if (filteredCategories.isNotEmpty) {
       return Column(
-        children: List.generate(listCategories.length, (index) {
-          final category = listCategories[index];
+        children: List.generate(filteredCategories.length, (index) {
+          final category = filteredCategories[index];
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: Container(
@@ -94,7 +98,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
-                    padding: EdgeInsetsGeometry.all(16),
+                    padding: const EdgeInsetsGeometry.all(16),
                     child: Column(
                       children: [
                         Align(
@@ -228,7 +232,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
     return Center(
       child: Text(
-        "No hay categorias registrados",
+        "No hay categorias registradas",
         textAlign: TextAlign.center,
         style: CustomTextStyle.bold32.copyWith(
           color: Theme.of(context).colorScheme.segundoText,
@@ -256,4 +260,23 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       },
     );
   }
+
+  void filterCategories(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        filteredCategories = listCategories;
+      });
+      return;
+    }
+
+    final lowerQuery = query.toLowerCase();
+
+    setState(() {
+      filteredCategories = listCategories.where((category) {
+        return category.name.toLowerCase().contains(lowerQuery) ||
+            category.clave.toLowerCase().contains(lowerQuery);
+      }).toList();
+    });
+  }
+
 }

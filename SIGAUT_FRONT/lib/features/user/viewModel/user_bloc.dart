@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/functions.dart';
+import 'package:sigaut_frontend/features/user/model/image_file_model.dart';
 import 'package:sigaut_frontend/features/user/model/user_model.dart';
 import 'package:sigaut_frontend/features/user/repository/user_repository.dart';
 part 'user_event.dart';
@@ -39,6 +40,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<EditUserEvent>((event, emit) async {
       emit(StartLoadingState(message: "Actualizando información"));
       try {
+        if (event.imageFile != null) {
+          String imageUrl = await userRepository.photoUser(userId: event.userModel.id, imageFile: event.imageFile!);
+          event.userModel.image_url = imageUrl;
+        }
+
         bool response = await userRepository.editUser(user: event.userModel);
         if(response) {
           if(event.updateLocal) {

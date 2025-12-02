@@ -23,7 +23,7 @@ public class Category {
     @Column(length = 50, nullable = false)
     private String name;
 
-    @Column(length = 50, nullable = false, unique = true)
+    @Column(length = 50, nullable = false)
     private String clave;
 
     @Column(length = 50, nullable = false)

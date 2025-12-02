@@ -56,6 +56,7 @@ class _ReportSaleScreenState extends State<ReportSaleScreen> {
         child: ContainerGeneralWidget(
           titleHeader: "Reporte de ventas",
           body: body,
+          centerBody: listSales.isEmpty,
           refreshFunction: () {
             saleBloc.add(AllSalesEvent());
           },

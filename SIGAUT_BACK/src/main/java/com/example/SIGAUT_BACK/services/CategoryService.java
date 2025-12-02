@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class CategoryService {
@@ -29,8 +31,13 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<ApiResponse> getAll() {
-        return new ResponseEntity<>(new ApiResponse(categoryRepository.findAll(), HttpStatus.OK), HttpStatus.OK);
+    public ResponseEntity<ApiResponse> getAll(int idUser) {
+        List<Category> categories = categoryRepository.findByUserId((long) idUser);
+
+        return new ResponseEntity<>(
+                new ApiResponse(categories, HttpStatus.OK),
+                HttpStatus.OK
+        );
     }
 
     @Transactional(readOnly = true)
@@ -52,10 +59,10 @@ public class CategoryService {
         User currentUser = userRepository.findById(request.getIdUser()).orElseThrow();
 
         System.out.println("Usuario: " + currentUser.getUsername());
-        if (categoryRepository.findByClave(request.getClave()).isPresent()) {
+        if (categoryRepository.findByClaveAndUserId(request.getClave(), currentUser.getId()).isPresent()) {
             return new ResponseEntity<>(new ApiResponse(CLAVE_EXISTS_MESSAGE, HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
-        Category category = new Category(request.getClave(), request.getName(), request.getDescription());
+        Category category = new Category(request.getName(), request.getClave(), request.getDescription());
         category.setUser(currentUser);
         Category savedCategory = categoryRepository.save(category);
         return new ResponseEntity<>(new ApiResponse(savedCategory, HttpStatus.OK), HttpStatus.OK);
@@ -107,7 +114,7 @@ public class CategoryService {
     private boolean updateCategoryClaveIfValid(Category updatedCategory, Category existingCategory) {
         if (updatedCategory.getClave() != null && !updatedCategory.getClave().isEmpty()
                 && !updatedCategory.getClave().equals(existingCategory.getClave())) {
-            if (categoryRepository.findByClave(updatedCategory.getClave()).isPresent()) {
+            if (categoryRepository.findByClaveAndUserId(updatedCategory.getClave(), updatedCategory.getUser().getId()).isPresent()) {
                 return false;
             }
             existingCategory.setClave(updatedCategory.getClave());
