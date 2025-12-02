@@ -9,8 +9,10 @@ import 'package:sigaut_frontend/features/others/view/widgets/form_input_widget.d
 import 'package:sigaut_frontend/features/others/view/widgets/functions.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/image_widget.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/map_address_picker.dart';
+import 'package:sigaut_frontend/features/others/view/widgets/navigation_helper.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/show_custom_dialog_widget.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/top_widget.dart';
+import 'package:sigaut_frontend/features/sale/view/sale_screen.dart';
 import 'package:sigaut_frontend/features/user/model/image_file_model.dart';
 import 'package:sigaut_frontend/features/user/model/user_model.dart';
 import 'package:sigaut_frontend/features/user/repository/user_repository.dart';
@@ -272,7 +274,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Flexible(
                   child: ButtonGeneralWidget(
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        NavigationHelper.navigateReplacement(context, const SaleScreen());
+                        //Navigator.of(context).pop();
                       },
                       backgroundColor: Theme.of(context).colorScheme.secondaryBgButton,
                       height: 48,

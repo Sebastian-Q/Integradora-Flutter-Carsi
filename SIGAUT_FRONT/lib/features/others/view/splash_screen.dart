@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sigaut_frontend/features/others/view/widgets/navigation_helper.dart';
 import 'package:sigaut_frontend/features/sale/view/sale_screen.dart';
 import 'package:sigaut_frontend/features/user/repository/user_repository.dart';
 import 'package:sigaut_frontend/core/theme/custom_color_scheme.dart';
@@ -32,10 +33,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (user.username.isNotEmpty) {
       // Hay un usuario guardado → ir a la pantalla principal
-      Navigator.pushReplacementNamed(context, SaleScreen.routeName);
+      NavigationHelper.navigateReplacement(context, const SaleScreen());
+      //Navigator.pushReplacementNamed(context, SaleScreen.routeName);
     } else {
       // No hay usuario → ir al login
-      Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+      NavigationHelper.navigateReplacement(context, const LoginScreen());
+      //Navigator.pushReplacementNamed(context, LoginScreen.routeName);
     }
   }
 
@@ -55,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
             const SizedBox(height: 8,),
             Container(
               child: Image.asset(
-                "assets/images/logo.png",
+                "assets/images/new_logo.png",
                 fit: BoxFit.contain,
               ),
             )

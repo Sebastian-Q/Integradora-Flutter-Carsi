@@ -19,7 +19,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SplashScreen(),
+    );
+    /*return MaterialApp(
       debugShowCheckedModeBanner: false,
       // 👇 Cambiamos la ruta inicial al splash
       initialRoute: SplashScreen.routeName,
@@ -33,6 +37,6 @@ class MyApp extends StatelessWidget {
         ProfileScreen.routeName: (args) => const ProfileScreen(),
         ReportSaleScreen.routeName: (args) => const ReportSaleScreen(),
       },
-    );
+    );*/
   }
 }

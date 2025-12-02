@@ -30,12 +30,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    customSizeHeight,
+                    const SizedBox(
+                      height: 32,
+                    ),
                     Text("Abarrotes UTEZ", style: CustomTextStyle.bold32.copyWith(color: Theme.of(context).colorScheme.quinaryBackground),),
-                    const SizedBox(height: 8,),
+                    const SizedBox(height: 16,),
                     Expanded(
                       child: Image.asset(
-                        "assets/images/logo.png",
+                        "assets/images/new_logo.png",
                         fit: BoxFit.contain,
                       ),
                     )

@@ -5,6 +5,7 @@ import 'package:sigaut_frontend/core/utils/validate_config.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/button_general_widget.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/form_input_widget.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/functions.dart';
+import 'package:sigaut_frontend/features/others/view/widgets/navigation_helper.dart';
 import 'package:sigaut_frontend/features/sale/view/sale_screen.dart';
 import 'package:sigaut_frontend/features/user/repository/user_repository.dart';
 import 'package:sigaut_frontend/features/user/view/register_screen.dart';
@@ -72,9 +73,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                   style: CustomTextStyle.semiBold12.copyWith(color: Theme.of(context).colorScheme.segundoText),
                 ),
               ),*/
-              const SizedBox(
-                height: 8,
-              ),
+              customSizeHeight,
 
               ButtonGeneralWidget(
                 width: MediaQuery.of(context).size.width,
@@ -94,7 +93,8 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
               ),
               GestureDetector(
                 onTap: () => {
-                  Navigator.pushNamed(context, RegisterScreen.routeName)
+                  NavigationHelper.navigateReplacement(context, const RegisterScreen())
+                  //Navigator.pushNamed(context, RegisterScreen.routeName)
                 },
                 child: RichText(
                   text: TextSpan(
@@ -110,6 +110,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                       ]),
                 ),
               ),
+              customSizeHeight,
             ],
           ),
         ),
@@ -123,7 +124,8 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
       String response = await userRepository.login(username: usernameController.text, password: passwordController.text);
       Navigator.pop(context);
       if (response == "exito") {
-        Navigator.pushNamed(context, SaleScreen.routeName);
+        NavigationHelper.navigateReplacement(context, const SaleScreen());
+        //Navigator.pushNamed(context, SaleScreen.routeName);
       } else {
         showSnackBar(context, response, type: AlertTypeMessage.error);
       }

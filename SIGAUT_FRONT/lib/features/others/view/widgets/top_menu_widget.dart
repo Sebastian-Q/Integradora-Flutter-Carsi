@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sigaut_frontend/features/others/view/widgets/navigation_helper.dart';
 import 'package:sigaut_frontend/features/product/view/products_screen.dart';
 import 'package:sigaut_frontend/features/sale/view/report_sale_screen.dart';
 import 'package:sigaut_frontend/features/sale/view/sale_screen.dart';
@@ -88,7 +89,8 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                             option(
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.pushNamed(context, ProfileScreen.routeName);
+                                NavigationHelper.navigateReplacement(context, const ProfileScreen());
+                                //Navigator.pushNamed(context, ProfileScreen.routeName);
                               },
                               title: "Perfil",
                               icon: Icon(
@@ -100,7 +102,8 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                             option(
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.pushNamed(context, SaleScreen.routeName);
+                                NavigationHelper.navigateReplacement(context, const SaleScreen());
+                                //Navigator.pushNamed(context, SaleScreen.routeName);
                               },
                               title: "Vender",
                               icon: Icon(
@@ -112,7 +115,8 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                             option(
                                 onTap: (){
                                   Navigator.pop(context);
-                                  Navigator.pushNamed(context, ProductsScreen.routeName);
+                                  NavigationHelper.navigateReplacement(context, const ProductsScreen());
+                                  //Navigator.pushNamed(context, ProductsScreen.routeName);
                                 },
                                 title: "Productos",
                                 image: "assets/images/svg/products.svg"
@@ -120,7 +124,8 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                             option(
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.pushNamed(context, CategoriesScreen.routeName);
+                                NavigationHelper.navigateReplacement(context, const CategoriesScreen());
+                                //Navigator.pushNamed(context, CategoriesScreen.routeName);
                               },
                               title: "Categoria",
                               icon: Icon(
@@ -133,7 +138,8 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                             option(
                               onTap: () {
                                 Navigator.pop(context);
-                                Navigator.pushNamed(context, ReportSaleScreen.routeName);
+                                NavigationHelper.navigateReplacement(context, const ReportSaleScreen());
+                                //Navigator.pushNamed(context, ReportSaleScreen.routeName);
                               },
                               title: "Reportes",
                               icon: Icon(
@@ -148,7 +154,8 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
                                 Navigator.pop(context);
                                 userRepository.deleteLocalUser();
                                 userRepository.deleteLocalToken();
-                                Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+                                NavigationHelper.navigateReplacement(context, const LoginScreen());
+                                //Navigator.pushReplacementNamed(context, LoginScreen.routeName);
                               },
                               title: "Cerrar sesión",
                               icon: Icon(
