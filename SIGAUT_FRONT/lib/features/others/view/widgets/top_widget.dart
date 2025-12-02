@@ -48,6 +48,20 @@ class _TopWidgetState extends State<TopWidget> {
               color: Theme.of(context).colorScheme.primeroIcon,
             ),
           ),
+
+          actions: [
+            IconButton(
+              onPressed: () {
+                print("Notificaciones presionado");
+              },
+              icon: Icon(
+                Icons.notifications,
+                size: 28,
+                color: Theme.of(context).colorScheme.primeroIcon,
+              ),
+            ),
+          ],
+
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
           ),
