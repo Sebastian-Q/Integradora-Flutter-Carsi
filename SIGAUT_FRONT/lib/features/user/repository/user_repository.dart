@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigaut_frontend/core/api/api.dart';
@@ -13,6 +13,20 @@ import 'package:sigaut_frontend/features/user/repository/auth_model.dart';
 
 class UserRepository {
   final Api api = Api();
+
+  final fcm = FirebaseMessaging.instance;
+
+  /// Obtener token del dispositivo
+  Future<String> generateDeviceToken() async {
+    String? token = await fcm.getToken();
+    return token ?? "";
+  }
+
+  Future<String> getDeviceToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('device') ?? '';
+    return token;
+  }
 
   Future<UserModel> getLocalUser() async {
     UserModel user = UserModel();
@@ -40,6 +54,11 @@ class UserRepository {
     await prefs.setString('token', token);
   }
 
+  void saveTokenDevice(String device) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('device', device);
+  }
+
   void deleteLocalUser() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('user');
@@ -52,21 +71,26 @@ class UserRepository {
 
   Future<String> login({required String username, required String password}) async {
     try {
+      final device = await generateDeviceToken();
+      debugPrint("FCM TOKEN: $device");
+
       final response = await api.post(
         '/auth/login',
         data: {
           'username': username,
           'password': password,
+          'device': device
         },
       );
 
       if (response.statusCode == 200) {
         final data = response.data;
-        debugPrint("AUTH: ${data["data"]}");
         final auth = AuthModel.fromJson(data["data"]);
-        debugPrint("AUTH: ${auth.toMap()}");
+
         saveLocalToken(auth.token);
         saveLocalUser(auth.userModel);
+        saveTokenDevice(device);
+
         return "exito";
       } else {
         return "Usuario o contraseña incorrectos";

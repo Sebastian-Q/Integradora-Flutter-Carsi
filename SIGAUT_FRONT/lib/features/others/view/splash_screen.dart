@@ -1,4 +1,6 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:sigaut_frontend/core/utils/Notificacion_service.dart';
 import 'package:sigaut_frontend/features/others/view/widgets/navigation_helper.dart';
 import 'package:sigaut_frontend/features/sale/view/sale_screen.dart';
 import 'package:sigaut_frontend/features/user/repository/user_repository.dart';
@@ -22,6 +24,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+
+    // 🔔 Inicializar listeners de notificaciones
+    NotificationService.initializeLocalNotifications();
+
     _checkLoginStatus();
   }
 

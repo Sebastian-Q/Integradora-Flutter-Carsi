@@ -1,14 +1,28 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:sigaut_frontend/features/category/view/categories_screen.dart';
+import 'package:sigaut_frontend/core/utils/Notificacion_service.dart';
 import 'package:sigaut_frontend/features/others/view/splash_screen.dart';
-import 'package:sigaut_frontend/features/product/view/products_screen.dart';
-import 'package:sigaut_frontend/features/sale/view/report_sale_screen.dart';
-import 'package:sigaut_frontend/features/sale/view/sale_screen.dart';
-import 'package:sigaut_frontend/features/user/view/login_screen.dart';
-import 'package:sigaut_frontend/features/user/view/profile_screen.dart';
-import 'package:sigaut_frontend/features/user/view/register_screen.dart';
 
-void main() {
+/// 📌 Handler global para mensajes en background
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  NotificationService.showLocalNotification(
+    title: message.notification?.title,
+    body: message.notification?.body,
+  );
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  // Registrar handler de background ANTES de runApp
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // Inicializar notificaciones locales (como WhatsApp)
+  await NotificationService.initializeLocalNotifications();
+
   runApp(const MyApp());
 }
 
@@ -23,20 +37,5 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     );
-    /*return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      // 👇 Cambiamos la ruta inicial al splash
-      initialRoute: SplashScreen.routeName,
-      routes: {
-        SplashScreen.routeName: (args) => const SplashScreen(),
-        LoginScreen.routeName: (args) => const LoginScreen(),
-        RegisterScreen.routeName: (args) => const RegisterScreen(),
-        SaleScreen.routeName: (args) => const SaleScreen(),
-        ProductsScreen.routeName: (args) => const ProductsScreen(),
-        CategoriesScreen.routeName: (args) => const CategoriesScreen(),
-        ProfileScreen.routeName: (args) => const ProfileScreen(),
-        ReportSaleScreen.routeName: (args) => const ReportSaleScreen(),
-      },
-    );*/
   }
 }
