@@ -35,9 +35,11 @@ public class MainSecurity {
     };
 
     private final UserDetailsServiceImpl service;
+    private final FirebaseTokenFilter firebaseTokenFilter;
 
-    public MainSecurity(UserDetailsServiceImpl service) {
+    public MainSecurity(UserDetailsServiceImpl service, FirebaseTokenFilter firebaseTokenFilter) {
         this.service = service;
+        this.firebaseTokenFilter = firebaseTokenFilter;
     }
 
     @Bean
@@ -94,6 +96,7 @@ public class MainSecurity {
                 .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
+                .addFilterBefore(firebaseTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler(accessDeniedHandler())

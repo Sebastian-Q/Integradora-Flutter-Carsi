@@ -24,6 +24,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Login login) {
-        return service.signIn(login.getUsername(), login.getPassword());
+        return service.signIn(login.getUsername(), login.getPassword(), login.getDevice());
     }
 }

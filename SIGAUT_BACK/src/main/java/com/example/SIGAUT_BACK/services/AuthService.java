@@ -3,7 +3,10 @@ package com.example.SIGAUT_BACK.services;
 import com.example.SIGAUT_BACK.config.ApiResponse;
 import com.example.SIGAUT_BACK.controller.auth.dto.SignedDto;
 import com.example.SIGAUT_BACK.models.User;
+import com.example.SIGAUT_BACK.repository.UserRepository;
 import com.example.SIGAUT_BACK.security.jwt.JwtProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseToken;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,15 +27,17 @@ public class AuthService {
     private final UserService service;
     private final AuthenticationManager manager;
     private final JwtProvider provider;
+    private final UserRepository userRepository;
 
-    public AuthService(UserService service, AuthenticationManager manager, JwtProvider provider) {
+    public AuthService(UserService service, AuthenticationManager manager, JwtProvider provider, UserRepository userRepository) {
         this.service = service;
         this.manager = manager;
         this.provider = provider;
+        this.userRepository = userRepository;
     }
 
     @Transactional
-    public ResponseEntity<ApiResponse> signIn(String username, String password) {
+    public ResponseEntity<ApiResponse> signIn(String username, String password, String deviceToken) {
         try {
             Optional<User> foundUser = service.findByUsername(username);
             if(foundUser.isEmpty()) {
@@ -47,9 +52,18 @@ public class AuthService {
                     new UsernamePasswordAuthenticationToken(username, password)
             );
             SecurityContextHolder.getContext().setAuthentication(auth);
+
+            // Guardar token FCM (NO VALIDAR)
+            if (deviceToken != null && !deviceToken.isBlank()) {
+                user.setDeviceToken(deviceToken);
+                userRepository.save(user);
+            }
+
             String token = provider.generateToken(auth);
             SignedDto signedDto = new SignedDto(token, "Bearer", user);
+
             return new ResponseEntity<>(new ApiResponse(signedDto, HttpStatus.OK), HttpStatus.OK);
+
         } catch (BadCredentialsException e) {
             System.out.println("ERROR 1: " + e.getMessage());
             return new ResponseEntity<>(
@@ -70,4 +84,5 @@ public class AuthService {
             );
         }
     }
+
 }
