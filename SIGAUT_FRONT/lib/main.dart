@@ -17,6 +17,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
+  await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    sound: true,
+    provisional: false,
+  );
+
   // Registrar handler de background ANTES de runApp
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
