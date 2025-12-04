@@ -89,12 +89,15 @@ class _ProductFormWidgetState extends State<ProductFormWidget> {
                   required: true,
                   fieldController: codeBarController,
                   textAlign: TextAlign.center,
+                  inputType: TextInputType.number,
                   onSave: (value) {
                     productModel.barCode = codeBarController.text;
                   },
                   exceptions: [
                     ValidateConfig.required(),
-                    ValidateConfig.whiteSpaces()
+                    ValidateConfig.whiteSpaces(),
+                    ValidateConfig.minLength(13),
+                    ValidateConfig.maxLength(13),
                   ],
                 ),
                 FormInputWidget(

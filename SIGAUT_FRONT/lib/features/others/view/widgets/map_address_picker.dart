@@ -55,9 +55,11 @@ class _MapAddressPickerState extends State<MapAddressPicker> {
 
       if (placemarks.isNotEmpty) {
         final place = placemarks.first;
-        String text =
-            "${place.street}, ${place.locality}, ${place.country}";
+
+        String text = "${place.street}, ${place.locality}, ${place.country}";
         addressController.text = text;
+
+        widget.onAddressSelected(text);
       }
     } catch (_) {}
   }
@@ -69,16 +71,17 @@ class _MapAddressPickerState extends State<MapAddressPicker> {
       children: [
         FormInputWidget(
           title: "Dirección",
+          fieldController: addressController, // ← usar el controller REAL
           iconSuffix: const Icon(Icons.location_on_outlined),
           bottomPadding: 16,
           onChange: (value) {
             if (value.length > 5) {
               _moveMapToAddress(value);
             }
+            widget.onAddressSelected(value);
           },
         ),
-        SizedBox(
-          height: 350,
+        Flexible(
           child: GoogleMap(
             initialCameraPosition: CameraPosition(
               target: _selectedPosition,

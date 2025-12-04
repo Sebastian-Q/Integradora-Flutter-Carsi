@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sigaut_frontend/core/theme/custom_color_scheme.dart';
 import 'package:sigaut_frontend/core/theme/custom_text_style.dart';
 import 'package:sigaut_frontend/core/utils/validate_config.dart';
@@ -184,6 +185,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         iconSuffix: const Icon(Icons.map_outlined),
                         readOnly: true,
                         onTap: () async {
+                          var status = await Permission.location.request();
+
+                          if (!status.isGranted) {
+                            openAppSettings();
+                            return;
+                          }
+
                           final result = await showDialog(
                             context: context,
                             builder: (context) {
@@ -207,6 +215,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               );
                             },
                           );
+
+                          if (result != null) {
+                            directionController.text = result;
+                            userModel.direction = result;
+                          }
                         },
                         onChange: (value) {
                           userModel.direction = value;
