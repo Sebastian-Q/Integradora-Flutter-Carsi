@@ -19,9 +19,9 @@ public class NotificationController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping("/send/{userId}")
-    public ResponseEntity<?> send(@PathVariable Long userId, @RequestBody Notification req) {
-        User user = userRepository.findById(userId)
+    @PostMapping("/send")
+    public ResponseEntity<?> send(@RequestBody Notification req) {
+        User user = userRepository.findById(req.getUserId())
                 .orElse(null);
 
         if (user == null) {
