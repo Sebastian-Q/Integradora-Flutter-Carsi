@@ -122,12 +122,13 @@ public class SaleService {
 
             if (currentUser.getDeviceToken() != null) {
                 try {
-                    notificationService.sendPushNotification(
+                    String response = notificationService.sendPushNotification(
                             currentUser.getDeviceToken(),
                             title,
                             body
                     );
-                    System.out.println("Notificación enviada correctamente");
+                    System.out.println("currentUser.getDeviceToken(): " + currentUser.getDeviceToken());
+                    System.out.println("Notificación enviada correctamente: " + response);
                 } catch (Exception e) {
                     System.out.println("Error enviando notificación: " + e.getMessage());
                 }
