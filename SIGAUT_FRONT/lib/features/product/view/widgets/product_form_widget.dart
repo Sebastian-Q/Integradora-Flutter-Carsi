@@ -46,9 +46,9 @@ class _ProductFormWidgetState extends State<ProductFormWidget> {
     }
     nameController = TextEditingController(text: productModel.name);
     codeBarController = TextEditingController(text: productModel.barCode);
-    stockController = TextEditingController(text: "${productModel.stock}");
-    countMinController = TextEditingController(text: "${productModel.quantityMinima}");
-    priceController = TextEditingController(text: "${productModel.price}");
+    stockController = TextEditingController(text: "${productModel.stock != 0 ? productModel.stock  : ""}");
+    countMinController = TextEditingController(text: "${productModel.quantityMinima  != 0 ? productModel.quantityMinima  : ""}");
+    priceController = TextEditingController(text: "${productModel.price != 0 ? productModel.price  : ""}");
     descriptionController = TextEditingController(text: productModel.description);
   }
 

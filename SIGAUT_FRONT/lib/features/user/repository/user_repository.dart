@@ -107,9 +107,10 @@ class UserRepository {
     try {
       final response = await api.post(urlUser, data: user.toSave());
       debugPrint("response.data: ${response.data["data"]}");
-      AuthModel auth = AuthModel.fromJson(response.data["data"]);
+      /// Bloqueado para que funcione bien todo xd
+      /*AuthModel auth = AuthModel.fromJson(response.data["data"]);
       saveLocalToken(auth.token);
-      saveLocalUser(auth.userModel);
+      saveLocalUser(auth.userModel);*/
       return response.statusCode == 201 || response.statusCode == 200;
     } on DioException catch (e) {
       final errorMessage = getDioErrorMessage(e);

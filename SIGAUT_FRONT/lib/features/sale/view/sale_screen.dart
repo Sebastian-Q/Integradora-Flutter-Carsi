@@ -155,6 +155,7 @@ class _SaleScreenState extends State<SaleScreen> {
                         ),
                         child: TextField(
                           controller: searchController,
+                          keyboardType: TextInputType.number,
                           textInputAction: TextInputAction.search,
                           style: CustomTextStyle.bold16.copyWith(
                             color: Theme.of(context).colorScheme.primaryInputColor,

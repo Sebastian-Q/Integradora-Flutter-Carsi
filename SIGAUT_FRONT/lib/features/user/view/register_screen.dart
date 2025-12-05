@@ -35,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           if (state is SuccessfulState) {
             showSnackBar(context, state.message.toString(), type: AlertTypeMessage.success);
             Future.delayed(const Duration(milliseconds: 500), () {
-              NavigationHelper.navigateReplacement(context, const SaleScreen());
+              NavigationHelper.navigateReplacement(context, const LoginScreen());
               //Navigator.pushNamed(context, SaleScreen.routeName);
             });
           }

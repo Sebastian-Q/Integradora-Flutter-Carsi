@@ -98,7 +98,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
-                    padding: EdgeInsetsGeometry.all(16),
+                    padding: const EdgeInsetsGeometry.all(16),
                     child: Column(
                       children: [
                         Row(
