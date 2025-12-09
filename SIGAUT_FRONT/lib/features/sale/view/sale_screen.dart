@@ -36,7 +36,6 @@ class _SaleScreenState extends State<SaleScreen> {
 
   /// Scanner
   bool scannerEnabled = false;
-  final MobileScannerController cameraController = MobileScannerController();
   bool _isScanning = false;
 
   @override
@@ -100,55 +99,7 @@ class _SaleScreenState extends State<SaleScreen> {
                     alignment: Alignment.bottomCenter,
                     child: Padding(
                       padding: const EdgeInsets.only(right: 16, bottom: 16, left: 16),
-                      child: scannerEnabled ? Container(
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Stack(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: MobileScanner(
-                                controller: cameraController,
-                                onDetect: (capture) {
-                                  if (_isScanning) return;
-                                  _isScanning = true; // evita múltiples lecturas rápidas
-
-                                  final List<Barcode> barcodes = capture.barcodes;
-                                  if (barcodes.isNotEmpty) {
-                                    final code = barcodes.first.rawValue ?? "";
-                                    debugPrint("Código detectado: $code");
-
-                                    if (code.isNotEmpty) {
-                                      saleBloc.add(AddProductSaleEvent(codeBar: code));
-                                      searchController.text = code;
-                                      Future.delayed(const Duration(milliseconds: 500), () {
-                                        setState(() {
-                                          scannerEnabled = false; // cierra cámara al leer
-                                          _isScanning = false;
-                                        });
-                                      });
-                                    } else {
-                                      _isScanning = false;
-                                    }
-                                  }
-                                },
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: IconButton(
-                                icon: const Icon(Icons.close, color: Colors.white, size: 28),
-                                onPressed: () {
-                                  setState(() => scannerEnabled = false);
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ) : Container(
+                      child: scannerEnabled ? scannerCamara() : Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.segundoBackground,
                           borderRadius: BorderRadius.circular(30),
@@ -287,6 +238,61 @@ class _SaleScreenState extends State<SaleScreen> {
             if (listProducts.isNotEmpty) _bottomBar(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget scannerCamara() {
+    final MobileScannerController cameraController = MobileScannerController();
+    _isScanning = false;
+    return Container(
+      height: 100,
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: MobileScanner(
+              controller: cameraController,
+              onDetect: (capture) {
+                debugPrint("_isScanning: $_isScanning");
+                if (_isScanning) return;
+                _isScanning = true; // evita múltiples lecturas rápidas
+
+                final List<Barcode> barcodes = capture.barcodes;
+                if (barcodes.isNotEmpty) {
+                  final code = barcodes.first.rawValue ?? "";
+                  debugPrint("Código detectado: $code");
+
+                  if (code.isNotEmpty) {
+                    saleBloc.add(AddProductSaleEvent(codeBar: code));
+                    //searchController.text = code;
+                    Future.delayed(const Duration(milliseconds: 500), () {
+                      setState(() {
+                        scannerEnabled = false; // cierra cámara al leer
+                        _isScanning = false;
+                      });
+                    });
+                  } else {
+                    _isScanning = false;
+                  }
+                }
+              },
+            ),
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: IconButton(
+              icon: const Icon(Icons.close, color: Colors.white, size: 28),
+              onPressed: () {
+                setState(() => scannerEnabled = false);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
