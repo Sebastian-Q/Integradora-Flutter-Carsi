@@ -43,6 +43,9 @@ public class User {
     @Column(length = 512)
     private String image_url;
 
+    @Column(name = "device_token")
+    private String deviceToken;
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Category> categories;
@@ -56,7 +59,7 @@ public class User {
     private List<Sale> sales;
 
 
-    public User(String name, String paternalName, String maternalName, String email, String username, String password, String direction, String image_url) {
+    public User(String name, String paternalName, String maternalName, String email, String username, String password, String direction, String image_url, String deviceToken) {
         this.name = name;
         this.paternalName = paternalName;
         this.maternalName = maternalName;
@@ -65,5 +68,6 @@ public class User {
         this.password = password;
         this.direction = direction;
         this.image_url = image_url;
+        this.deviceToken = deviceToken;
     }
 }

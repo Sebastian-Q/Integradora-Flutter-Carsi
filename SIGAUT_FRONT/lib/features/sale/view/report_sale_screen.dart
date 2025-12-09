@@ -60,7 +60,7 @@ class _ReportSaleScreenState extends State<ReportSaleScreen> {
           refreshFunction: () {
             saleBloc.add(AllSalesEvent());
           },
-          otherActions: [
+          /*otherActions: [
             IconButton(
               onPressed: () {
                 showDialog(
@@ -123,7 +123,7 @@ class _ReportSaleScreenState extends State<ReportSaleScreen> {
                 color: Colors.white,
               ),
             )
-          ],
+          ],*/
         ),
       ),
     );

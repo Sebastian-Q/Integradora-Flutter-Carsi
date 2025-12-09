@@ -12,4 +12,5 @@ public class Login {
     @NotBlank
     @NotEmpty
     private String password;
+    private String device;
 }

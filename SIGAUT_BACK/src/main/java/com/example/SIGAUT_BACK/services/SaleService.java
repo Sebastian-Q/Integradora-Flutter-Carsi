@@ -13,9 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -25,11 +27,13 @@ public class SaleService {
     private final SaleRepository saleRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
-    public SaleService(SaleRepository saleRepository, ProductRepository productRepository, UserRepository userRepository) {
+    public SaleService(SaleRepository saleRepository, ProductRepository productRepository, UserRepository userRepository, NotificationService notificationService) {
         this.saleRepository = saleRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
+        this.notificationService = notificationService;
     }
 
     public ResponseEntity<ApiResponse> getAllSales(int idUser) {
@@ -51,10 +55,7 @@ public class SaleService {
         User currentUser = userRepository.findById(request.getIdUser()).orElseThrow();
         // Validar lista de productos
         if (request.getProductsList() == null || request.getProductsList().isEmpty()) {
-            return new ResponseEntity<>(
-                    new ApiResponse("Debe incluir al menos un producto", HttpStatus.BAD_REQUEST),
-                    HttpStatus.BAD_REQUEST
-            );
+            return new ResponseEntity<>(new ApiResponse("Debe incluir al menos un producto", HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
         }
 
         // Validar stock disponible
@@ -77,7 +78,7 @@ public class SaleService {
             productRepository.save(product);
         }
 
-        // Establecer fecha actual si no se envía
+        // Guardar venta
         Sale sale = new Sale(
                 request.getTotal(),
                 request.getAmountSale(),
@@ -85,9 +86,55 @@ public class SaleService {
                 request.getEmployee(),
                 request.getPayMethod()
         );
-        //sale.setProductsList(request.getProductsList());
         sale.setUser(currentUser);
         Sale savedSale = saleRepository.save(sale);
+
+        // -------------------------
+        // 🔔 VALIDAR STOCK BAJO + ENVIAR NOTIFICACIÓN
+        // -------------------------
+        List<Product> lowStockProducts = new ArrayList<>();
+
+        for (Product p : request.getProductsList()) {
+            Product product = productRepository.findById(p.getId()).get();
+
+            if (product.getStock() <= product.getQuantityMinima()) {
+                lowStockProducts.add(product);
+            }
+        }
+
+        if (!lowStockProducts.isEmpty()) {
+
+            String productNames = lowStockProducts.stream()
+                    .map(Product::getName)
+                    .collect(Collectors.joining(", "));
+
+            String title;
+            String body;
+
+            if (lowStockProducts.size() == 1) {
+                Product only = lowStockProducts.get(0);
+                title = "Poco " + only.getName() + " en stock";
+                body = "La cantidad actual de " + only.getName() + " es menor a la recomendada.";
+            } else {
+                title = "Pocos productos en stock";
+                body = "Los siguientes productos están por debajo del stock recomendado: " + productNames;
+            }
+
+            if (currentUser.getDeviceToken() != null) {
+                try {
+                    String response = notificationService.sendPushNotification(
+                            currentUser.getDeviceToken(),
+                            title,
+                            body
+                    );
+                    System.out.println("currentUser.getDeviceToken(): " + currentUser.getDeviceToken());
+                    System.out.println("Notificación enviada correctamente: " + response);
+                } catch (Exception e) {
+                    System.out.println("Error enviando notificación: " + e.getMessage());
+                }
+            }
+        }
+
         return new ResponseEntity<>(new ApiResponse(savedSale, HttpStatus.OK), HttpStatus.OK);
     }
 

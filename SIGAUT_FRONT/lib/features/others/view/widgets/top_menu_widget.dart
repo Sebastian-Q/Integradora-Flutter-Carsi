@@ -56,15 +56,29 @@ class _TopMenuWidgetState extends State<TopMenuWidget> {
               leading: Padding(
                   padding: const EdgeInsets.all(10),
                   child: IconButton(
-                      icon: SvgPicture.asset(
-                        'assets/images/svg/arrow_back.svg',
-                        height: 32,
-                        fit: BoxFit.contain,
-                        allowDrawingOutsideViewBox: true,
-                        colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.primeroIcon, BlendMode.srcIn),
+                      icon: Icon(
+                        Icons.arrow_back,
+                        size: 28,
+                        color: Theme.of(context).colorScheme.primeroIcon,
                       ),
                       onPressed: () => Navigator.pop(context))
               ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: IconButton(
+                    onPressed: () {
+                      print("Notificaciones presionado");
+                    },
+                    icon: Icon(
+                      Icons.notifications,
+                      size: 28,
+                      color: Theme.of(context).colorScheme.primeroIcon,
+                    ),
+                  ),
+                )
+              ],
+
             ),
             Flexible(
               child: Container(

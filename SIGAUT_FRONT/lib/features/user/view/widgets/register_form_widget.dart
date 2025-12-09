@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sigaut_frontend/core/theme/custom_color_scheme.dart';
 import 'package:sigaut_frontend/core/theme/custom_text_style.dart';
 import 'package:sigaut_frontend/core/utils/validate_config.dart';
@@ -95,32 +96,45 @@ class _RegisterFormWidgetState extends State<RegisterFormWidget> {
             textAlign: TextAlign.center,
             iconSuffix: const Icon(Icons.map_outlined),
             readOnly: true,
-            onTap: () async {
-              final result = await showDialog(
-                context: context,
-                builder: (context) {
-                  return Dialog(
-                    insetPadding: const EdgeInsets.all(16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: ShowCustomDialogWidget(
-                      title: "Seleccionar dirección",
-                      actionOk: () {
-                        Navigator.of(context).pop(directionController.text);
-                      },
-                      child: MapAddressPicker(
-                        initialAddress: directionController.text,
-                        onAddressSelected: (address) {
-                          directionController.text = address;
-                        },
+              onTap: () async {
+                var status = await Permission.location.request();
+
+                if (!status.isGranted) {
+                  openAppSettings();
+                  return;
+                }
+
+                final result = await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Dialog(
+                      insetPadding: const EdgeInsets.all(16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                    ),
-                  );
-                },
-              );
-            },
-            onChange: (value) {
+                      child: ShowCustomDialogWidget(
+                        title: "Seleccionar dirección",
+                        actionOk: () {
+                          Navigator.of(context).pop(directionController.text);
+                        },
+                        child: MapAddressPicker(
+                          initialAddress: directionController.text,
+                          onAddressSelected: (address) {
+                            directionController.text = address;
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                );
+
+                if (result != null) {
+                  directionController.text = result;
+                  userModel.direction = result;
+                }
+              },
+              onChange: (value) {
+              debugPrint("value: $value");
               userModel.direction = value;
             },
             exceptions: [ValidateConfig.required()],
